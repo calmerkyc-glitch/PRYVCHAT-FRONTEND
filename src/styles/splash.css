@@ -10,6 +10,12 @@
   background: radial-gradient(circle at top, rgba(80, 180, 255, 0.14), transparent 20%),
     radial-gradient(circle at bottom right, rgba(158, 255, 255, 0.12), transparent 18%),
     linear-gradient(180deg, #0f276f 0%, #162b70 28%, #1e3d92 60%, #2f6db1 100%);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.splash-exit {
+  opacity: 0;
+  transform: scale(0.98);
 }
 
 .splash-background {
@@ -17,10 +23,10 @@
   inset: 0;
   background-image: url('/splash.png');
   background-position: center;
-  background-size: 420px;
+  background-size: 460px;
   background-repeat: no-repeat;
-  opacity: 0.18;
-  filter: blur(4px);
+  opacity: 0.34;
+  filter: blur(2px);
 }
 
 .splash-overlay {
@@ -81,7 +87,7 @@
   background: linear-gradient(180deg, rgba(28, 42, 88, 0.98), rgba(50, 27, 108, 0.95));
   border: 1px solid rgba(255, 255, 255, 0.12);
   box-shadow: 0 32px 90px rgba(0, 25, 74, 0.35);
-  overflow: hidden;
+  overflow: visible;
   animation: popIn 0.9s ease-out both;
 }
 
@@ -103,22 +109,33 @@
   left: 50%;
   top: -42px;
   transform: translateX(-50%);
-  width: 84px;
-  height: 84px;
-  border-radius: 24px;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.22);
-  backdrop-filter: blur(16px);
+  width: 108px;
+  height: 108px;
+  border-radius: 28px;
+  background: radial-gradient(circle at 40% 35%, rgba(255, 255, 255, 0.98), rgba(255, 255, 255, 0.22) 45%);
+  border: 1.5px solid rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(18px);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 5;
+  box-shadow: 0 28px 70px rgba(0, 34, 70, 0.4), inset 0 0 0 1px rgba(255, 255, 255, 0.12);
+  z-index: 12;
+  animation: badgeGlow 10s ease-in-out infinite;
+}
+
+.splash-card-badge::before {
+  content: '';
+  position: absolute;
+  inset: 10px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
 }
 
 .splash-logo {
-  width: 54px;
-  height: 54px;
+  width: 84px;
+  height: 84px;
   object-fit: contain;
+  filter: brightness(1.35) contrast(1.25) drop-shadow(0 0 32px rgba(0, 0, 0, 0.34));
 }
 
 .splash-card-body {
@@ -138,7 +155,14 @@
   text-align: center;
   letter-spacing: -0.03em;
   text-shadow: 0 20px 45px rgba(0, 0, 0, 0.2);
-  animation: fadeInUp 1s ease-out 0.3s both;
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  width: 0;
+  border-right: 3px solid rgba(255, 255, 255, 0.9);
+  animation:
+    typing 2s steps(10, end) 0.8s forwards,
+    blink-caret 0.75s step-end infinite 0.8s;
 }
 
 .splash-subtitle {
@@ -169,7 +193,21 @@
   width: 0;
   background: linear-gradient(90deg, rgba(130, 255, 255, 0.92), rgba(14, 164, 255, 0.95));
   border-radius: 999px;
-  animation: progress 10s linear forwards;
+  animation: progress 6s linear forwards;
+}
+
+.splash-track::after {
+  content: '';
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgba(130, 255, 255, 0.96);
+  transform: translateY(-50%);
+  box-shadow: 0 0 16px rgba(130, 255, 255, 0.35);
+  animation: pulseLoader 1.4s ease-in-out infinite alternate;
 }
 
 .splash-status {
@@ -213,6 +251,17 @@
   }
 }
 
+@keyframes badgeGlow {
+  0%, 100% {
+    box-shadow: 0 24px 60px rgba(0, 34, 70, 0.32), inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+    transform: translateX(-50%) scale(1);
+  }
+  50% {
+    box-shadow: 0 32px 86px rgba(0, 34, 70, 0.38), inset 0 0 0 1px rgba(255, 255, 255, 0.14);
+    transform: translateX(-50%) scale(1.02);
+  }
+}
+
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -221,6 +270,35 @@
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@keyframes typing {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+@keyframes blink-caret {
+  from, to {
+    border-color: transparent;
+  }
+  50% {
+    border-color: rgba(255, 255, 255, 0.85);
+  }
+}
+
+@keyframes pulseLoader {
+  from {
+    transform: translateY(-50%) scale(0.92);
+    box-shadow: 0 0 10px rgba(130, 255, 255, 0.18);
+  }
+  to {
+    transform: translateY(-50%) scale(1.18);
+    box-shadow: 0 0 20px rgba(130, 255, 255, 0.35);
   }
 }
 

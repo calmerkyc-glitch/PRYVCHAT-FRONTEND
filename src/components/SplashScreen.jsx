@@ -1,16 +1,25 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import "../styles/splash.css";
 
 export default function SplashScreen({ onFinish }) {
+  const [isExiting, setIsExiting] = useState(false);
+
   useEffect(() => {
-    const timer = setTimeout(() => {
+    const exitTimer = setTimeout(() => {
+      setIsExiting(true);
+    }, 5400);
+    const finishTimer = setTimeout(() => {
       onFinish();
-    }, 10000);
-    return () => clearTimeout(timer);
+    }, 6000);
+
+    return () => {
+      clearTimeout(exitTimer);
+      clearTimeout(finishTimer);
+    };
   }, [onFinish]);
 
   return (
-    <div className="splash-container">
+    <div className={`splash-container ${isExiting ? "splash-exit" : ""}`}>
       <div className="splash-background"></div>
       <div className="splash-overlay"></div>
 
