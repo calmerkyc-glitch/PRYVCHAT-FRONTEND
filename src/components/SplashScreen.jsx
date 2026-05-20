@@ -5,36 +5,44 @@ export default function SplashScreen({ onFinish }) {
   useEffect(() => {
     const timer = setTimeout(() => {
       onFinish();
-    }, 12000); // 12 seconds for longer animation display
+    }, 10000);
     return () => clearTimeout(timer);
   }, [onFinish]);
 
   return (
     <div className="splash-container">
-      {/* Background with smiley design */}
       <div className="splash-background"></div>
-      
-      {/* Central content */}
+      <div className="splash-overlay"></div>
+
       <div className="splash-content">
-        {/* Decorative circle background for spinner */}
-        <div className="splash-circle-bg"></div>
-        
-        {/* Advanced spinner */}
-        <div className="splash-spinner">
-          <div className="spinner-ring"></div>
-          <div className="spinner-ring spinner-ring-2"></div>
+        <div className="splash-floating-lock">
+          <div className="splash-lock-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+              <rect x="4" y="11" width="16" height="10" rx="2" />
+              <path d="M8 11V7a4 4 0 0 1 8 0v4" />
+            </svg>
+          </div>
         </div>
 
-        {/* Animated app name and loading text */}
-        <div className="splash-text-container">
-          <h1 className="splash-title">Pryv Chat</h1>
-          <p className="splash-loading">Loading...</p>
+        <div className="splash-card">
+          <div className="splash-card-badge">
+            <img src="/splash.png" alt="Pryv logo" className="splash-logo" />
+          </div>
+
+          <div className="splash-card-body">
+            <h1 className="splash-title">Pryv Chat</h1>
+            <p className="splash-subtitle">
+              Secure. Private. Professional. Conversations that stay between you.
+            </p>
+          </div>
+        </div>
+
+        <div className="splash-track"></div>
+        <div className="splash-status">
+          <span className="splash-status-mark"></span>
+          <span>END-TO-END ENCRYPTED</span>
         </div>
       </div>
-
-      {/* Animated background shapes */}
-      <div className="splash-decoration splash-decoration-1"></div>
-      <div className="splash-decoration splash-decoration-2"></div>
     </div>
   );
 }

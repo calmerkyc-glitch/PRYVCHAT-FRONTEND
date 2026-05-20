@@ -14,11 +14,6 @@ function App() {
     setShowSplash(false);
   };
 
-  useEffect(() => {
-    const timer = setTimeout(() => setShowSplash(false), 500);
-    return () => clearTimeout(timer);
-  }, []);
-
   if (showSplash) {
     return <SplashScreen onFinish={handleSplashFinish} />;
   }
