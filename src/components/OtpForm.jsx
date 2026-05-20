@@ -91,9 +91,11 @@ export default function OtpForm({ userData, onVerified, onError, onBack }) {
           <button
             type="button"
             onClick={() => onBack?.()}
-            className="inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-slate-200 bg-white text-slate-900 transition hover:border-slate-300 hover:text-slate-950"
+            aria-label="Back"
+            title="Back"
+            className="inline-flex h-14 w-14 items-center justify-center rounded-full bg-indigo-950 text-white shadow-lg ring-1 ring-indigo-900 hover:bg-indigo-900 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-indigo-700 transition"
           >
-            <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <svg className="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <path d="M15 18l-6-6 6-6" />
             </svg>
           </button>
