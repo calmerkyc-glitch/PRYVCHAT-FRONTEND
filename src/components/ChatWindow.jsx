@@ -2,6 +2,7 @@ import { useState, useEffect, useContext, useMemo } from "react";
 import { io } from "socket.io-client";
 import API from "../utils/api.js";
 import ContactsList from "./ContactsList.jsx";
+import UserDiscovery from "./UserDiscovery.jsx";
 import { AuthContext } from "../context/AuthContext.jsx";
 
 const formatTime = (value) =>
@@ -16,6 +17,7 @@ export default function ChatWindow() {
   const [messages, setMessages] = useState([]);
   const [selectedTag, setSelectedTag] = useState(null);
   const [activeView, setActiveView] = useState("chats");
+  const [contactsSubView, setContactsSubView] = useState("list");
   const [mobileMode, setMobileMode] = useState("list");
   const [search, setSearch] = useState("");
   const [input, setInput] = useState("");
@@ -66,7 +68,8 @@ export default function ChatWindow() {
   useEffect(() => {
     if (!userTag) return;
 
-    const client = io("http://localhost:5000");
+    const socketUrl = import.meta.env.VITE_SOCKET_URL || import.meta.env.VITE_API_URL || "http://localhost:5000";
+    const client = io(socketUrl);
     setSocket(client);
 
     client.on("receiveMessage", (msg) => {
@@ -142,6 +145,7 @@ export default function ChatWindow() {
   const selectContact = (tag) => {
     setSelectedTag(tag);
     setActiveView("chats");
+    setContactsSubView("list");
     setMobileMode("conversation");
     const existing = messages
       .filter((msg) => msg.senderTag === tag && msg.receiverTag === userTag)
@@ -237,9 +241,35 @@ export default function ChatWindow() {
                   Log out
                 </button>
               </div>
+            ) : activeView === "contacts" ? (
+              <div className="flex flex-1 flex-col">
+                <div className="flex items-center justify-between gap-2 border-b border-slate-200 px-4 py-3">
+                  {["list", "discover"].map((mode) => (
+                    <button
+                      key={mode}
+                      onClick={() => setContactsSubView(mode)}
+                      className={`flex-1 rounded-full px-3 py-2 text-xs font-semibold transition ${contactsSubView === mode ? "bg-indigo-950 text-white" : "bg-slate-100 text-slate-700 hover:bg-slate-200"}`}
+                    >
+                      {mode === "list" ? "My Contacts" : "Discover"}
+                    </button>
+                  ))}
+                </div>
+                {contactsSubView === "discover" ? (
+                  <UserDiscovery onStartChat={selectContact} currentUserTag={userTag} />
+                ) : (
+                  <ContactsList
+                    title="My Contacts"
+                    contacts={filteredContacts}
+                    selectedTag={selectedTag}
+                    onSelect={selectContact}
+                    searchValue={search}
+                    onSearchChange={setSearch}
+                  />
+                )}
+              </div>
             ) : (
               <ContactsList
-                title={activeView === "chats" ? "Chats" : "Contacts"}
+                title="Chats"
                 contacts={filteredContacts}
                 selectedTag={selectedTag}
                 onSelect={selectContact}
