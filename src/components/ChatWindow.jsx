@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext, useMemo } from "react";
-import { io } from "socket.io-client";
 import API from "../utils/api.js";
+import { initSocket, disconnectSocket } from "../utils/socket.js";
 import ContactsList from "./ContactsList.jsx";
 import UserDiscovery from "./UserDiscovery.jsx";
 import { AuthContext } from "../context/AuthContext.jsx";
@@ -68,8 +68,7 @@ export default function ChatWindow() {
   useEffect(() => {
     if (!userTag) return;
 
-    const socketUrl = import.meta.env.VITE_SOCKET_URL || import.meta.env.VITE_API_URL || "http://localhost:5000";
-    const client = io(socketUrl);
+    const client = initSocket();
     setSocket(client);
 
     client.on("receiveMessage", (msg) => {
@@ -79,7 +78,7 @@ export default function ChatWindow() {
     });
 
     return () => {
-      client.disconnect();
+      disconnectSocket(client);
     };
   }, [userTag]);
 

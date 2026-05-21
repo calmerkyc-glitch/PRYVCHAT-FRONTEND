@@ -14,3 +14,18 @@ The React Compiler is not enabled on this template because of its impact on dev 
 ## Expanding the ESLint configuration
 
 If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+
+## Deployment / Environment Variables
+
+For production deployment with Vercel (frontend) and Render (backend), use environment variables so the app points to the correct backend and socket host.
+
+Add these to your Vercel project settings:
+
+- `VITE_API_URL=https://pryvchat-backend.onrender.com`
+- `VITE_SOCKET_URL=https://pryvchat-backend.onrender.com`
+
+If your Render backend uses a custom domain, replace the URL above with that custom domain.
+
+The frontend uses `VITE_API_URL` for HTTP requests and `VITE_SOCKET_URL` for real-time Socket.IO connections.
+
+After setting the vars, redeploy the frontend so Vite can bundle the correct values.
