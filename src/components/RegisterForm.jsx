@@ -15,6 +15,11 @@ export default function RegisterForm({ onOtpSent }) {
       return;
     }
 
+    if (form.email && form.phone) {
+      setError("Enter either email or phone, not both.");
+      return;
+    }
+
     try {
       setLoading(true);
       await API.post("/auth/register", form);
@@ -88,7 +93,10 @@ export default function RegisterForm({ onOtpSent }) {
                   placeholder="name@example.com"
                   autoComplete="email"
                   value={form.email}
-                  onChange={(e) => setForm({ ...form, email: e.target.value })}
+                  onChange={(e) => {
+                    const email = e.target.value;
+                    setForm({ ...form, email, phone: email ? "" : form.phone });
+                  }}
                   className="w-full h-11 sm:h-12 rounded-2xl border border-gray-300 bg-gray-50 px-3 sm:px-4 text-sm sm:text-base text-gray-900 placeholder-gray-400 outline-none transition focus:border-indigo-600 focus:ring-2 focus:ring-indigo-100"
                 />
                 <input
@@ -96,10 +104,14 @@ export default function RegisterForm({ onOtpSent }) {
                   placeholder="(123) 456-7890"
                   autoComplete="tel"
                   value={form.phone}
-                  onChange={(e) => setForm({ ...form, phone: e.target.value })}
+                  onChange={(e) => {
+                    const phone = e.target.value;
+                    setForm({ ...form, phone, email: phone ? "" : form.email });
+                  }}
                   className="w-full h-11 sm:h-12 rounded-2xl border border-gray-300 bg-gray-50 px-3 sm:px-4 text-sm sm:text-base text-gray-900 placeholder-gray-400 outline-none transition focus:border-indigo-600 focus:ring-2 focus:ring-indigo-100"
                 />
               </div>
+              <p className="mt-2 text-xs text-slate-500">Enter email or phone, not both. We will send OTP to one chosen contact.</p>
             </div>
           </div>
 
