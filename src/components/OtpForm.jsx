@@ -20,7 +20,7 @@ export default function OtpForm({ userData, onVerified, onError, onBack }) {
     e.preventDefault();
     onError(null);
 
-    if (currentOtp.length < 6 || currentOtp.includes("")) {
+    if (currentOtp.length < 6 || otpValues.some((value) => value === "")) {
       onError("Please enter the 6-digit code.");
       return;
     }
